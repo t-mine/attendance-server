@@ -1,5 +1,5 @@
 service: attendance-server
-frameworkVersion: "2"
+frameworkVersion: '2'
 
 provider:
   name: aws
@@ -17,18 +17,18 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:ap-northeast-1:*:*"
+      Resource: 'arn:aws:dynamodb:ap-northeast-1:*:*'
 
 functions:
   login:
-    handler: src/functions/auth/handler.login
+    handler: src/functions/handler.login
     events:
       - http:
           path: login
           method: post
           cors: true
   logout:
-    handler: src/functions/auth/handler.logout
+    handler: src/functions/handler.logout
     events:
       - http:
           path: logout
@@ -38,7 +38,7 @@ functions:
 resources:
   Resources:
     ClientsDynamoDbTable:
-      Type: "AWS::DynamoDB::Table"
+      Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
@@ -54,5 +54,5 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-        TableName: "user"
+        TableName: 'user'
     # work-table

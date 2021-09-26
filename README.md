@@ -10,15 +10,14 @@ npm install
 ## Deploy
 
 ```
-serverless deploy -v
+serverless deploy --verbose
+serverless deploy function -f login --stage dev --verbose
 ```
 
 ## Curl
 
 ```
 curl -X POST -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/dev/login -d "{\"email\":\"tanaka@example.com\",\"password\":\"tanaka\"}"
-curl -X POST -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/dev/clients -d "{\"body\": {\"name\":\"neko\",\"redirectUri\":\"https://example.com\"}}"
-curl -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/dev/clients/YYYYYYYYYYYYYYYYYYYYYYYYYYYY
 ```
 
 ## Remove resources
