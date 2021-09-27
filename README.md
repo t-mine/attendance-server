@@ -18,6 +18,7 @@ serverless deploy function -f login --stage dev --verbose
 
 ```
 curl -X POST -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/dev/login -d "{\"email\":\"tanaka@example.com\",\"password\":\"tanaka\"}"
+curl -X DELETE -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/dev/logout
 ```
 
 ## Remove resources

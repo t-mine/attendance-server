@@ -21,7 +21,7 @@ module.exports.login = (event, context) => {
 module.exports.logout = (event, context) => {
   logout(event, (error, result) => {
     const response = {
-      statusCode: 200,
+      statusCode: result.statusCode,
       headers: {
         'Access-Control-Allow-Origin': '*',
       },
