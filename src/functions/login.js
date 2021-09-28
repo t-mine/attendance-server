@@ -12,30 +12,25 @@ module.exports.handler = async (event, context) => {
   // 検索条件を作成
   const params = {
     TableName: 'user',
-    Key: {
-      email: requestBody.email,
-    },
+    Key: { email: requestBody.email },
   };
-  console.log(JSON.stringify(params));
 
   // ユーザーテーブルを検索
-  const user = await dynamoDb.get(params).promise();
+  const result = await dynamoDb.get(params).promise();
+  const user = result.Item;
   console.log('検索結果 : ' + JSON.stringify(user));
 
   // 検索結果に応じてレスポンスの内容を生成
-  const result = {};
-  if (user.Item && user.Item.password === requestBody.password) {
-    result.statusCode = 200;
-    result.user = user.Item;
-  } else {
-    result.statusCode = 401;
+  let statusCode = 401;
+  let body = '';
+  if (user && user.password === requestBody.password) {
+    statusCode = 200;
+    body = JSON.stringify(user);
   }
   const response = {
-    statusCode: result.statusCode,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-    },
-    body: result.user ? JSON.stringify(result.user) : '',
+    statusCode: statusCode,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    body: body,
   };
 
   // レスポンスを返す

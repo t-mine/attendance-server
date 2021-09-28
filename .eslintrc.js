@@ -2,10 +2,7 @@ module.exports = {
   extends: ['eslint:recommended'],
   plugins: ['node'],
   parserOptions: {
-    ecmaVersion: 2017,
-  },
-  engines: {
-    node: '>=7.6.0',
+    ecmaVersion: 2020,
   },
   env: {
     es6: true,

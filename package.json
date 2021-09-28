@@ -18,6 +18,9 @@
     "url": "https://github.com/t-mine/serverless-sample/issues"
   },
   "homepage": "https://github.com/t-mine/serverless-sample#readme",
+  "engines": {
+    "node": ">=7.6.0"
+  },
   "dependencies": {
     "aws-sdk": "^2.992.0",
     "uuid": "^8.3.2"
