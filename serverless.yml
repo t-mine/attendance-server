@@ -21,7 +21,7 @@ provider:
 
 functions:
   login:
-    handler: src/functions/handler.login
+    handler: src/functions/login.handler
     events:
       - http:
           path: login

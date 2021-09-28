@@ -24,5 +24,5 @@ curl -X DELETE -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/de
 ## Remove resources
 
 ```
-serverless remove -v
+serverless remove --verbose
 ```
