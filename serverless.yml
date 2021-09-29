@@ -28,7 +28,7 @@ functions:
           method: post
           cors: true
   logout:
-    handler: src/functions/handler.logout
+    handler: src/functions/logout.handler
     events:
       - http:
           path: logout

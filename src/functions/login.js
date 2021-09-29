@@ -20,7 +20,7 @@ module.exports.handler = async (event, context) => {
   const user = result.Item;
   console.log('検索結果 : ' + JSON.stringify(user));
 
-  // 検索結果に応じてレスポンスの内容を生成
+  // レスポンスを生成
   let statusCode = 401;
   let body = '';
   if (user && user.password === requestBody.password) {

@@ -1,9 +1,13 @@
 'use strict';
 
-module.exports = (event, callback) => {
-  const result = {
+// ログアウトAPI
+module.exports.handler = async (event, context) => {
+  // レスポンスを生成
+  const response = {
     statusCode: 200,
+    headers: { 'Access-Control-Allow-Origin': '*' },
   };
 
-  callback({}, result);
+  // レスポンスを返す
+  context.succeed(response);
 };
