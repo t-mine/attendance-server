@@ -35,19 +35,15 @@ functions:
           method: delete
           cors: true
 
+# https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
 resources:
   Resources:
-    ClientsDynamoDbTable:
+    UserDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
           - AttributeName: email
             AttributeType: S
-        #          - AttributeName: password
-        #            AttributeType: S
-        #          - AttributeName: name
-        #            AttributeType: S
         KeySchema:
           - AttributeName: email
             KeyType: HASH
@@ -55,4 +51,31 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: 'user'
-    # work-table
+    WorkTableDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+          - AttributeName: year_month
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: 'gsi_email_year_month'
+            KeySchema:
+              - AttributeName: 'email'
+                KeyType: 'HASH'
+              - AttributeName: 'year_month'
+                KeyType: 'RANGE'
+            # GSIで検索した時に取得する属性を指定している
+            Projection:
+              ProjectionType: 'ALL'
+            ProvisionedThroughput:
+              ReadCapacityUnits: '1'
+              WriteCapacityUnits: '1'
+        TableName: 'work_table'
