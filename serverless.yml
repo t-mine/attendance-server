@@ -34,6 +34,13 @@ functions:
           path: logout
           method: delete
           cors: true
+  workTable:
+    handler: src/functions/getWorkTable.handler
+    events:
+      - http:
+          path: work-table
+          method: get
+          cors: true
 
 # https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
 resources:
