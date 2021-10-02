@@ -27,10 +27,9 @@ module.exports.handler = async (event, context) => {
   };
 
   // ユーザーテーブルを検索
-  let workTables;
+  let result;
   try {
-    const result = await dynamoDb.query(params).promise();
-    workTables = result.Items;
+    result = await dynamoDb.query(params).promise();
     console.log('検索結果 : ' + JSON.stringify(result));
   } catch (e) {
     console.log('DynamoDB検索失敗');
@@ -40,7 +39,7 @@ module.exports.handler = async (event, context) => {
 
   // レスポンスを生成
   let statusCode = 200;
-  let body = JSON.stringify(workTables);
+  let body = JSON.stringify(result.Items);
   const response = {
     statusCode: statusCode,
     headers: { 'Access-Control-Allow-Origin': '*' },
