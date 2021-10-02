@@ -12,21 +12,26 @@ module.exports.handler = async (event, context) => {
   const requestParam = event.queryStringParameters;
 
   // 検索条件を作成
+  // https://stackoverflow.com/questions/43732835/getitem-from-secondary-index-with-dynamodb
+  // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#query-property
+  // https://qiita.com/sayama0402/items/fc7ce074f1f1747b1bef
+  // https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/SQLtoNoSQL.ReadData.Query.html
   const params = {
     TableName: 'work_table',
-    // TODO たぶん、GSIの検索の仕方があるので調べる
-    Key: {
-      email: requestParam.email,
-      year_month: requestParam.year + requestParam.month,
+    IndexName: 'gsi_email_year_month',
+    KeyConditionExpression: 'email = :email and year_month = :yearMonth',
+    ExpressionAttributeValues: {
+      ':email': requestParam.email,
+      ':yearMonth': requestParam.year + requestParam.month,
     },
   };
 
   // ユーザーテーブルを検索
-  let workTable;
+  let workTables;
   try {
-    const result = await dynamoDb.get(params).promise();
-    workTable = result.Item;
-    console.log('検索結果 : ' + JSON.stringify(workTable));
+    const result = await dynamoDb.query(params).promise();
+    workTables = result.Items;
+    console.log('検索結果 : ' + JSON.stringify(result));
   } catch (e) {
     console.log('DynamoDB検索失敗');
     console.log(e);
@@ -35,7 +40,7 @@ module.exports.handler = async (event, context) => {
 
   // レスポンスを生成
   let statusCode = 200;
-  let body = JSON.stringify(workTable);
+  let body = JSON.stringify(workTables);
   const response = {
     statusCode: statusCode,
     headers: { 'Access-Control-Allow-Origin': '*' },
