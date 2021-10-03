@@ -3,7 +3,7 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-// ワークテーブル取得API
+// 勤務表取得API
 module.exports.handler = async (event, context) => {
   // クエリ文字列
   // ※クエリ文字列はリクエストボディと違いJSON形式文字列ではなく
@@ -26,7 +26,7 @@ module.exports.handler = async (event, context) => {
     },
   };
 
-  // ユーザーテーブルを検索
+  // 勤務表を検索
   let result;
   try {
     result = await dynamoDb.query(params).promise();
