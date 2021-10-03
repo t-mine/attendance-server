@@ -24,7 +24,7 @@ module.exports.handler = async (event, context) => {
           day_of_Week: item.dayOfWeek,
           start_time: item.startTime,
           end_time: item.endTime,
-          memo: item.memo + 'testetstets',
+          memo: item.memo,
         },
       };
       // 勤務表テーブルにデータを追加
