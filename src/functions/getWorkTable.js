@@ -18,7 +18,14 @@ module.exports.handler = async (event, context) => {
   // https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/SQLtoNoSQL.ReadData.Query.html
   const params = {
     TableName: 'work_table',
+    // 属性
+    ProjectionExpression: '#day, day_of_week, start_time, end_time, memo',
+    ExpressionAttributeNames: {
+      '#day': 'day',
+    },
+    // GSI
     IndexName: 'gsi_email_year_month',
+    // 検索条件
     KeyConditionExpression: 'email = :email and year_month = :yearMonth',
     ExpressionAttributeValues: {
       ':email': requestParam.email,

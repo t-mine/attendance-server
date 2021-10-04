@@ -46,7 +46,7 @@ functions:
     events:
       - http:
           path: work-table
-          method: post
+          method: put
           cors: true
 
 # https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
