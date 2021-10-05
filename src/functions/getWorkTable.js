@@ -41,18 +41,17 @@ module.exports.handler = async (event, context) => {
   } catch (e) {
     console.log('DynamoDB検索失敗');
     console.log(e);
-    // TODO ここで失敗用のレスポンスを返したい。
+    // レスポンスを返す
+    context.succeed({
+      statusCode: 500,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+    });
   }
 
-  // レスポンスを生成
-  let statusCode = 200;
-  let body = JSON.stringify(result.Items);
-  const response = {
-    statusCode: statusCode,
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    body: body,
-  };
-
   // レスポンスを返す
-  context.succeed(response);
+  context.succeed({
+    statusCode: 200,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    body: JSON.stringify(result.Items),
+  });
 };
