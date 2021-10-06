@@ -48,6 +48,13 @@ functions:
           path: work-table
           method: put
           cors: true
+  putUser:
+    handler: src/functions/putUser.handler
+    events:
+      - http:
+          path: user
+          method: put
+          cors: true
 
 # https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
 resources:

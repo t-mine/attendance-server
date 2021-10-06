@@ -3,11 +3,13 @@
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
-// ワークテーブル取得API
+// 勤務表テーブル更新API
 module.exports.handler = async (event, context) => {
   // リクエストボディ
   const requestBody = JSON.parse(event.body);
   console.log(event.body);
+
+  let errCnt = 0;
 
   await Promise.all(
     // 配列をmapして要素をPromiseに変換
@@ -33,6 +35,7 @@ module.exports.handler = async (event, context) => {
       } catch (e) {
         console.log('DynamoDB登録失敗');
         console.log(e);
+        errCnt++;
       }
     })
   );
@@ -41,5 +44,6 @@ module.exports.handler = async (event, context) => {
   context.succeed({
     statusCode: 200,
     headers: { 'Access-Control-Allow-Origin': '*' },
+    body: JSON.stringify({ errCnt: errCnt ? errCnt : 0 }),
   });
 };
