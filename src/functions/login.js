@@ -2,6 +2,7 @@
 
 const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const { v4: uuidv4 } = require('uuid');
 
 // ログインAPI
 module.exports.handler = async (event, context) => {
@@ -21,6 +22,7 @@ module.exports.handler = async (event, context) => {
   console.log('検索結果 : ' + JSON.stringify(user));
 
   // レスポンスを生成
+  user.token = uuidv4();
   let statusCode = 401;
   let body = '';
   if (user && user.password === requestBody.password) {
