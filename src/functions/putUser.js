@@ -36,6 +36,6 @@ module.exports.handler = async (event, context) => {
   context.succeed({
     statusCode: 200,
     headers: { 'Access-Control-Allow-Origin': '*' },
-    body: JSON.stringify({ errCnt: errCnt ? errCnt : 0 }),
+    body: JSON.stringify({ errCnt: errCnt }),
   });
 };
