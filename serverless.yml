@@ -55,6 +55,13 @@ functions:
           path: user
           method: put
           cors: true
+  deleteUser:
+    handler: src/functions/deleteUser.handler
+    events:
+      - http:
+          path: user
+          method: delete
+          cors: true
 
 # https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
 resources:
