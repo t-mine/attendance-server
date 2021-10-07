@@ -26,8 +26,7 @@ module.exports.handler = async (event, context) => {
       try {
         await dynamoDb.put(params).promise();
       } catch (e) {
-        console.log('DynamoDB登録失敗');
-        console.log(e);
+        console.error('Unable to update item. Error JSON:', JSON.stringify(e, null, 2));
         errCnt++;
       }
     })
