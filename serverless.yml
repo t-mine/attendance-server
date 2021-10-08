@@ -19,6 +19,26 @@ provider:
         - dynamodb:DeleteItem
       Resource: 'arn:aws:dynamodb:ap-northeast-1:*:*'
 
+# plugins:
+#   - serverless-reqvalidator-plugin
+#   - serverless-aws-documentation
+
+# custom:
+#   documentation:
+#     models:
+#       - name: loginModel
+#         contentType: 'application/json'
+#         schema:
+#           required:
+#             - email
+#             - password
+#           type: object # たぶん、ここをarrayにすれば配列になる
+#           properties:
+#             email:
+#               type: string
+#             password:
+#               type: string
+
 functions:
   login:
     handler: src/functions/login.handler
@@ -27,6 +47,10 @@ functions:
           path: login
           method: post
           cors: true
+          # documentation:
+          #   requestModels:
+          #     'application/json': loginModel
+          # reqValidatorName: 'LoginModelValidator'
   logout:
     handler: src/functions/logout.handler
     events:
@@ -41,6 +65,14 @@ functions:
           path: work-table
           method: get
           cors: true
+          request:
+            parameters:
+              querystrings:
+                email: true
+                year: true
+                month: true
+              #headers:
+              #  Authorization: true
   putWorkTable:
     handler: src/functions/putWorkTable.handler
     events:
@@ -111,3 +143,15 @@ resources:
               ReadCapacityUnits: '1'
               WriteCapacityUnits: '1'
         TableName: 'work_table'
+    # LoginApi:
+    #   Type: AWS::ApiGateway::RestApi
+    #   Properties:
+    #     Name: loginApi
+    # LoginModelValidator:
+    #   Type: AWS::ApiGateway::RequestValidator
+    #     Properties:
+    #       Name: 'Login-Model-Validator'
+    #       RestApiId:
+    #         Ref: LoginApi
+    #       ValidateRequestBody: true  # bodyをチェック
+    #       ValidateRequestParameters: false  # paramはチェックしない
