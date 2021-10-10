@@ -1,7 +1,7 @@
 'use strict';
 
-const AWS = require('aws-sdk');
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const DynamoDb = require('../clients/dynamoDBClient');
+const dynamoDb = DynamoDb.create();
 
 // ユーザー削除API
 module.exports.handler = async (event, context) => {
@@ -20,12 +20,12 @@ module.exports.handler = async (event, context) => {
           email: item.email,
         },
       };
-      dynamoDb.delete(params, function (err) {
-        if (err) {
-          console.error('Unable to delete item. Error JSON:', JSON.stringify(err, null, 2));
-          errCnt++;
-        }
-      });
+      try {
+        await dynamoDb.delete(params).promise();
+      } catch (e) {
+        console.error('Unable to delete item. Error JSON:', JSON.stringify(e, null, 2));
+        errCnt++;
+      }
     })
   );
 

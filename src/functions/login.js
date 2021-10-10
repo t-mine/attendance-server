@@ -1,7 +1,7 @@
 'use strict';
 
-const AWS = require('aws-sdk');
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const DynamoDb = require('../clients/dynamoDBClient');
+const dynamoDb = DynamoDb.create();
 const { v4: uuidv4 } = require('uuid');
 
 // ログインAPI
@@ -22,11 +22,11 @@ module.exports.handler = async (event, context) => {
   console.log('検索結果 : ' + JSON.stringify(user));
 
   // レスポンスを生成
-  user.token = uuidv4();
   let statusCode = 401;
   let body = '';
   if (user && user.password === requestBody.password) {
     statusCode = 200;
+    user.token = uuidv4();
     body = JSON.stringify(user);
   }
   const response = {

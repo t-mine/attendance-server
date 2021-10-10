@@ -1,7 +1,7 @@
 'use strict';
 
-const AWS = require('aws-sdk');
-const dynamoDb = new AWS.DynamoDB.DocumentClient();
+const DynamoDb = require('../clients/dynamoDBClient');
+const dynamoDb = DynamoDb.create();
 
 // 勤務表取得API
 module.exports.handler = async (event, context) => {
