@@ -12,6 +12,12 @@ npm install
 ```
 serverless deploy --verbose
 serverless deploy function -f login --stage dev --verbose
+
+https://github.com/nordcloud/serverless-plugin-additional-stacks#command-line-usage
+serverless deploy additionalstacks
+serverless deploy additionalstacks --stack [stackname]
+serverless deploy --skip-additionalstacks
+
 ```
 
 ## Curl
@@ -29,4 +35,8 @@ curl -X DELETE -kv https://XXXXXXXXX.execute-api.ap-northeast-1.amazonaws.com/de
 
 ```
 serverless remove --verbose
+
+https://github.com/nordcloud/serverless-plugin-additional-stacks#command-line-usage
+serverless remove additionalstacks --stack [stackname]
+serverless remove additionalstacks
 ```

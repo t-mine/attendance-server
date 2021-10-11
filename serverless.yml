@@ -19,9 +19,64 @@ provider:
         - dynamodb:DeleteItem
       Resource: 'arn:aws:dynamodb:ap-northeast-1:*:*'
 
-# plugins:
+plugins:
+  - serverless-plugin-additional-stacks
 #   - serverless-reqvalidator-plugin
 #   - serverless-aws-documentation
+
+custom:
+  # https://github.com/serverless/serverless/issues/3183
+  # https://github.com/nordcloud/serverless-plugin-additional-stacks
+  additionalStacks:
+    permanent:
+      Resources:
+        UserDynamoDbTable:
+          Type: 'AWS::DynamoDB::Table'
+          #DeletionPolicy: Retain
+          Properties:
+            AttributeDefinitions:
+              - AttributeName: email
+                AttributeType: S
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+            TableName: 'user'
+        WorkTableDynamoDbTable:
+          Type: 'AWS::DynamoDB::Table'
+          #DeletionPolicy: Retain
+          Properties:
+            AttributeDefinitions:
+              - AttributeName: email
+                AttributeType: S
+              - AttributeName: year_month_day
+                AttributeType: S
+              - AttributeName: year_month
+                AttributeType: S
+            KeySchema:
+              - AttributeName: email
+                KeyType: HASH
+              - AttributeName: year_month_day
+                KeyType: RANGE
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+            GlobalSecondaryIndexes:
+              - IndexName: 'gsi_email_year_month'
+                KeySchema:
+                  - AttributeName: 'email'
+                    KeyType: 'HASH'
+                  - AttributeName: 'year_month'
+                    KeyType: 'RANGE'
+                # GSIで検索した時に取得する属性を指定している
+                Projection:
+                  ProjectionType: 'ALL'
+                ProvisionedThroughput:
+                  ReadCapacityUnits: '1'
+                  WriteCapacityUnits: '1'
+            TableName: 'work_table'
 
 # custom:
 #   documentation:
@@ -94,64 +149,19 @@ functions:
           path: user
           method: delete
           cors: true
-
 # https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
-resources:
-  Resources:
-    UserDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: email
-            AttributeType: S
-        KeySchema:
-          - AttributeName: email
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        TableName: 'user'
-    WorkTableDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
-      Properties:
-        AttributeDefinitions:
-          - AttributeName: email
-            AttributeType: S
-          - AttributeName: year_month_day
-            AttributeType: S
-          - AttributeName: year_month
-            AttributeType: S
-        KeySchema:
-          - AttributeName: email
-            KeyType: HASH
-          - AttributeName: year_month_day
-            KeyType: RANGE
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
-        GlobalSecondaryIndexes:
-          - IndexName: 'gsi_email_year_month'
-            KeySchema:
-              - AttributeName: 'email'
-                KeyType: 'HASH'
-              - AttributeName: 'year_month'
-                KeyType: 'RANGE'
-            # GSIで検索した時に取得する属性を指定している
-            Projection:
-              ProjectionType: 'ALL'
-            ProvisionedThroughput:
-              ReadCapacityUnits: '1'
-              WriteCapacityUnits: '1'
-        TableName: 'work_table'
-    # LoginApi:
-    #   Type: AWS::ApiGateway::RestApi
-    #   Properties:
-    #     Name: loginApi
-    # LoginModelValidator:
-    #   Type: AWS::ApiGateway::RequestValidator
-    #     Properties:
-    #       Name: 'Login-Model-Validator'
-    #       RestApiId:
-    #         Ref: LoginApi
-    #       ValidateRequestBody: true  # bodyをチェック
-    #       ValidateRequestParameters: false  # paramはチェックしない
+#resources:
+#  Resources:
+
+# LoginApi:
+#   Type: AWS::ApiGateway::RestApi
+#   Properties:
+#     Name: loginApi
+# LoginModelValidator:
+#   Type: AWS::ApiGateway::RequestValidator
+#     Properties:
+#       Name: 'Login-Model-Validator'
+#       RestApiId:
+#         Ref: LoginApi
+#       ValidateRequestBody: true  # bodyをチェック
+#       ValidateRequestParameters: false  # paramはチェックしない
