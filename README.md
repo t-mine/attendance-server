@@ -1,5 +1,8 @@
 # attendance-server
 
+勤怠管理システムのバックエンド。
+Serverless Framework、API Gateway、Node.js。
+
 ## Project setup
 
 ```
