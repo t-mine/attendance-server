@@ -21,8 +21,6 @@ provider:
 
 plugins:
   - serverless-plugin-additional-stacks
-#   - serverless-reqvalidator-plugin
-#   - serverless-aws-documentation
 
 custom:
   # https://github.com/serverless/serverless/issues/3183
@@ -30,6 +28,7 @@ custom:
   additionalStacks:
     permanent:
       Resources:
+        # https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
         UserDynamoDbTable:
           Type: 'AWS::DynamoDB::Table'
           #DeletionPolicy: Retain
@@ -78,22 +77,6 @@ custom:
                   WriteCapacityUnits: '1'
             TableName: 'work_table'
 
-# custom:
-#   documentation:
-#     models:
-#       - name: loginModel
-#         contentType: 'application/json'
-#         schema:
-#           required:
-#             - email
-#             - password
-#           type: object # たぶん、ここをarrayにすれば配列になる
-#           properties:
-#             email:
-#               type: string
-#             password:
-#               type: string
-
 functions:
   login:
     handler: src/functions/login.handler
@@ -102,10 +85,6 @@ functions:
           path: login
           method: post
           cors: true
-          # documentation:
-          #   requestModels:
-          #     'application/json': loginModel
-          # reqValidatorName: 'LoginModelValidator'
   logout:
     handler: src/functions/logout.handler
     events:
@@ -149,19 +128,3 @@ functions:
           path: user
           method: delete
           cors: true
-# https://docs.aws.amazon.com/ja_jp/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
-#resources:
-#  Resources:
-
-# LoginApi:
-#   Type: AWS::ApiGateway::RestApi
-#   Properties:
-#     Name: loginApi
-# LoginModelValidator:
-#   Type: AWS::ApiGateway::RequestValidator
-#     Properties:
-#       Name: 'Login-Model-Validator'
-#       RestApiId:
-#         Ref: LoginApi
-#       ValidateRequestBody: true  # bodyをチェック
-#       ValidateRequestParameters: false  # paramはチェックしない
