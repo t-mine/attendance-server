@@ -21,6 +21,8 @@ serverless deploy additionalstacks
 serverless deploy additionalstacks --stack [stackname]
 serverless deploy --skip-additionalstacks
 
+API Gatewayに独自ドメイン作成(Route53にドメイン設定済み、ACMに証明書作成済みの前提)
+serverless create_domain
 ```
 
 ## Curl

@@ -21,8 +21,16 @@ provider:
 
 plugins:
   - serverless-plugin-additional-stacks
+  - serverless-domain-manager
 
 custom:
+  # https://qiita.com/sugurutakahashi12345/items/c4e0cf5708a792703b9d
+  customDomain:
+    domainName: t-mine-test-00001.tech
+    basePath: dev
+    createRoute53Record: true
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
   # https://github.com/serverless/serverless/issues/3183
   # https://github.com/nordcloud/serverless-plugin-additional-stacks
   additionalStacks:
