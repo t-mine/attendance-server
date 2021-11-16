@@ -7,6 +7,9 @@ provider:
   lambdaHashingVersion: 20201221
   region: ap-northeast-1
   stage: dev
+  apiGateway:
+    apiKeys:
+      - attendanceApiKey
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -93,6 +96,7 @@ functions:
           path: login
           method: post
           cors: true
+          private: true
   logout:
     handler: src/functions/logout.handler
     events:
@@ -100,6 +104,7 @@ functions:
           path: logout
           method: delete
           cors: true
+          private: true
   getWorkTable:
     handler: src/functions/getWorkTable.handler
     events:
@@ -107,6 +112,7 @@ functions:
           path: work-table
           method: get
           cors: true
+          private: true
           request:
             parameters:
               querystrings:
@@ -122,6 +128,7 @@ functions:
           path: work-table
           method: put
           cors: true
+          private: true
   putUser:
     handler: src/functions/putUser.handler
     events:
@@ -129,6 +136,7 @@ functions:
           path: user
           method: put
           cors: true
+          private: true
   deleteUser:
     handler: src/functions/deleteUser.handler
     events:
@@ -136,3 +144,4 @@ functions:
           path: user
           method: delete
           cors: true
+          private: true
